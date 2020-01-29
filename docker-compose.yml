@@ -12,11 +12,11 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongo
-    environment:
-      - MONGODB_USER=admin
-      - MONGODB_PASS=123456
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=123456
+    #environment:
+      #- MONGODB_USER=admin
+      #- MONGODB_PASS=123456
+      #- MONGO_INITDB_ROOT_USERNAME=admin
+      #- MONGO_INITDB_ROOT_PASSWORD=123456
     volumes:
       - ./web/mongo/db:/data/db #数据文件挂载
       - ./web/mongo/log:/var/log/mongodb
