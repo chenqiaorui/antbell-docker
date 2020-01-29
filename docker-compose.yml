@@ -1,0 +1,18 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    volumes:
+      - ./web/rabbitmq/data:/var/lib/rabbitmq #数据文件挂载
+      - ./web/rabbitmq/log:/var/log/rabbitmq #日志文件挂载
+    ports:
+      - 5672:5672
+      - 15672:15672
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    volumes:
+      - ./web/mongo/db:/data/db #数据文件挂载
+    ports:
+      - 27017:27017
