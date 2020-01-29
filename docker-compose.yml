@@ -22,3 +22,12 @@ services:
       - ./web/mongo/log:/var/log/mongodb
     ports:
       - 27017:27017
+  redis:
+    image: redis:4
+    restart: always
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./web/redis/data:/data"
+    command: ["redis-server", "--appendonly", "yes"]
