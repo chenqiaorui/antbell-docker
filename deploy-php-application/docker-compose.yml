@@ -1,0 +1,27 @@
+version: '3.5'
+services:
+    web:
+        image: ricky/web-nginx
+        restart: always
+        container_name: web-nginx
+        volumes:
+            - "./web/conf/site.conf:/etc/nginx/conf.d/default.conf"
+            - "./web/www:/var/www/html"
+            - "./web/log:/var/log/nginx"
+            - "/etc/localtime:/etc/localtime:ro"
+        ports:
+            - "85:80"
+            - "443:443"
+            - "19321:19321"
+        environment:
+            - NGINX_HOST=localhost
+        tty: true
+    php:
+        image: ricky/php-application
+        restart: always
+        container_name: php-application
+        volumes:
+            #- "./web/www:/var/www/html"
+            - "./php/code:/var/www/html"
+            - "/etc/localtime:/etc/localtime:ro"
+        tty: true
