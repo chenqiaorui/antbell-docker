@@ -1,16 +1,30 @@
-FROM centos
+FROM nginx:stable
 
 LABEL maintainer="NGINX Docker Maintainers <809155736@qq.com>"
 
-RUN yum install -y wget
+#RUN apt-get update -y && apt-get install -y \
+#        vim \
+#        inetutils-ping \ 
+#        procps \
+#        iproute2 \
+#        iftop \
+#        net-tools
 
-VOLUME ["/var/www/html"]
+ENV LANG C.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
 
-ENV PATH /opt/nginx/sbin:$PATH
+# modify group name
+RUN groupmod -n nobody nogroup
+COPY ./nginx.conf /etc/nginx/nginx.conf
+RUN sed -i "s/user  www-data/user  nobody/" /etc/nginx/nginx.conf
+
+# Define mountable directories.
+#VOLUME ["/etc/nginx/conf.d", "/var/log/nginx", "/var/www/html"]
+
+# Define working directory.
+WORKDIR /etc/nginx/conf.d
 
 EXPOSE 80
 
 ENTRYPOINT ["nginx"]
-
 CMD ["-g", "daemon off;"]
-#ENTRYPOINT ["sh", "-c", "while true;do echo  hello;sleep 10;done"]

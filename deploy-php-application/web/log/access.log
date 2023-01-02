@@ -1,0 +1,4 @@
+172.19.0.1 - - [02/Jan/2023:17:10:38 +0800] "GET / HTTP/1.1" 200 40 "-" "curl/7.29.0"
+192.168.31.145 - - [02/Jan/2023:17:10:59 +0800] "GET /favicon.ico HTTP/1.1" 404 548 "http://192.168.31.87/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+192.168.31.145 - - [02/Jan/2023:17:12:06 +0800] "GET / HTTP/1.1" 200 40 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+172.19.0.1 - - [02/Jan/2023:17:24:33 +0800] "GET / HTTP/1.1" 200 20 "-" "curl/7.29.0"
