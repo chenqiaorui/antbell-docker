@@ -1,0 +1,60 @@
+version: '3'
+
+######## 项目依赖的环境，启动项目之前要先启动此环境 #######
+######## The environment that the project depends on, starting this environment before starting the project #######
+
+services:
+  blackbox_exporter:
+    image: quay.io/prometheus/blackbox-exporter:latest
+    container_name: blackbox
+    ports:
+      - 9115:9115
+    command:
+      - '--config.file=/config/blackbox.yml'
+    restart: always
+    volumes:
+      - ./blackbox:/config
+
+  #prometheus监控 — Prometheus for monitoring
+  prometheus:
+    image: prom/prometheus:v2.28.1
+    container_name: prometheus
+    environment:
+      # 时区上海 - Time zone Shanghai (Change if needed)
+      TZ: Asia/Shanghai
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./data/prometheus:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: always
+    user: root
+    ports:
+      - 9090:9090
+    networks:
+      - black_net
+
+  #查看prometheus监控数据 - Grafana to view Prometheus monitoring data
+  grafana:
+    image: grafana/grafana:8.0.6
+    container_name: grafana
+    hostname: grafana
+    user: root
+    environment:
+      # 时区上海 - Time zone Shanghai (Change if needed)
+      TZ: Asia/Shanghai
+    restart: always
+    volumes:
+        - ./grafana/data:/var/lib/grafana
+    ports:
+        - "3001:3000"
+    networks:
+        - black_net
+
+networks:
+  black_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
