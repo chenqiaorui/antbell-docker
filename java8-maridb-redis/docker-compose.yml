@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+    web-db:
+        image: mariadb:10
+        restart: always
+        container_name: web-db
+        env_file:
+            - ".env"
+        environment:
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        ports:
+            - "3306:3306"
+        volumes:
+            - "/etc/timezone:/etc/timezone:ro"
+            - "./mariadb/data/db:/var/lib/mysql"
+    redis:
+        image: redis:4
+        restart: always
+        container_name: redis
+        env_file:
+            - ".env"
+        ports:
+            - "6379:6379"
+        volumes:
+            - "./redis/data:/data"
+        command: ["redis-server", "--appendonly", "yes"]
+    atm-app:
+        image: ricky/spring-java-ubuntu
+        container_name: emog-app
+        restart: always
+        ports:
+            - "8080:8080"
+        environment:
+            - TZ=Asia/Hong_Kong
+            - JAR_NAME=EMOG_API.jar
+            - JAVA_OPTIONS=-Dfile.encoding=UTF-8
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - "./emog/app:/app"
+        stdin_open: true
+        tty: true
+        depends_on:
+            - web-db
